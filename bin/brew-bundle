@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 # -*- coding: utf-8 -*-
 
+require_relative "../lib/brew_bundle/brew"
+
 def handle_cask(command)
 end
 
@@ -8,6 +10,7 @@ def handle_tap(command)
 end
 
 def handle_update
+  Brew.run_command "update"
 end
 
 def handle_install(command)

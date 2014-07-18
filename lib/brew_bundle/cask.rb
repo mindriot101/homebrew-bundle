@@ -1,2 +1,4 @@
-class Cask
+require_relative 'brew'
+
+class Cask < Brew
 end

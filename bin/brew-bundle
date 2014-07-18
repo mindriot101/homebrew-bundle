@@ -2,12 +2,14 @@
 # -*- coding: utf-8 -*-
 
 require_relative "../lib/brew_bundle/brew"
+require_relative "../lib/brew_bundle/cask"
 
 Brew.configure do |config|
   config.test_run = true
 end
 
 def handle_cask(command)
+  Cask.run_command command
 end
 
 def handle_tap(command)

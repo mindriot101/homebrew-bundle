@@ -1,0 +1,32 @@
+#!/usr/bin/env ruby
+# -*- coding: utf-8 -*-
+
+def handle_cask(command)
+end
+
+def handle_tap(command)
+end
+
+def handle_update
+end
+
+def handle_install(command)
+end
+
+File.open("Brewfile") do |f|
+  f.each do |line|
+    if line !~ /^$/ and not line.include? '#'
+      if line.include? 'cask '
+        handle_cask line
+      elsif line.include? 'tap '
+        handle_tap line
+      elsif line.include? 'update'
+        handle_update
+      elsif line.include? 'install '
+        handle_install line
+      else
+        puts "Unknown command: #{line}"
+      end
+    end
+  end
+end

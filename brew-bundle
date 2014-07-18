@@ -1,0 +1,92 @@
+#!/usr/bin/env bash
+# -*- coding: utf-8 -*-
+
+set -e
+
+main() {
+    verify_args "$@"
+    local readonly brewfile='Brewfile'
+
+    brew_lines "${brewfile}" | while read command; do
+        run_command "$command"
+    done
+}
+
+run_command() {
+    local readonly command="$1"
+    if string_contains "${command}" "cask install"; then
+        handle_cask "${command}"
+    elif string_contains "${command}" "tap "; then
+        handle_tap "${command}"
+    elif string_contains "${command}" "install "; then
+        handle_install "${command}"
+    elif string_contains "${command}" "update"; then
+        handle_update
+    else
+        echo "Unknown command ${command}" >&2
+    fi
+}
+
+handle_update() {
+    true
+}
+
+handle_cask() {
+    local readonly command="$1"
+}
+
+handle_tap() {
+    local readonly command="$1"
+}
+
+handle_install() {
+    local readonly command="$1"
+    local readonly args=$(echo ${command} | cut -d ' ' -f 2-)
+
+    for arg in $args; do
+        arguments=""
+        if string_contains "${arg}" "--"; then
+            arguments="${arguments} ${arg}"
+        else
+            local package="${arg}"
+        fi
+        test -z "${arguments}" || echo $arguments
+
+        # if [ -z "${arguments}" ]; then
+        #     echo "install ${package}"
+        # else
+        #     echo "install ${arguments} ${package}"
+        # fi
+    done
+}
+
+string_contains() {
+    local readonly fullstring="$1"
+    local readonly substring="$2"
+
+    if [[ "${fullstring}" == *${substring}* ]]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+brew_lines() {
+    cat "${1}" | grep -v '^$\|^\s*\#'
+}
+
+verify_args() {
+    if [[ "$#" > 1 ]]; then
+        usage $0 >&2
+        exit 1
+    fi
+}
+
+usage() {
+    cat <<-EOF
+Program usage: $0
+EOF
+}
+
+main "$@"
+

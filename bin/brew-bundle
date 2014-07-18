@@ -3,6 +3,10 @@
 
 require_relative "../lib/brew_bundle/brew"
 
+Brew.configure do |config|
+  config.test_run = true
+end
+
 def handle_cask(command)
 end
 

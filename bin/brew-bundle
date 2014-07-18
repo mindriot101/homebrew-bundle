@@ -24,13 +24,13 @@ File.open("Brewfile") do |f|
   f.each do |line|
     if line !~ /^$/ and not line.include? '#'
       if line.include? 'cask '
-        handle_cask line
+        handle_cask line.strip()
       elsif line.include? 'tap '
-        handle_tap line
+        handle_tap line.strip()
       elsif line.include? 'update'
         handle_update
       elsif line.include? 'install '
-        handle_install line
+        handle_install line.strip()
       else
         puts "Unknown command: #{line}"
       end
